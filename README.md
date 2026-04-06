@@ -1,6 +1,8 @@
 # Glow loader
 
-A small static page that showcases an **SVG loading spinner** with layered glow, gradients, and a smooth “breathing” dash animation. Built with plain **HTML** and **CSS** (custom properties and `@property` for interpolating dash values).
+A small **SVG loading spinner** with layered glow, gradients, and a smooth “breathing” dash animation. Built with plain **HTML** and **CSS** (custom properties and `@property` for interpolating dash values).
+
+Change the loader size with `--spinner-size` in `styles.css` (`.spinner` uses it for width).
 
 ## Run it
 
@@ -17,7 +19,6 @@ npx serve .
 |------|------|
 | `index.html` | Markup and inline SVG for the spinner |
 | `styles.css` | Layout, theme tokens, spinner geometry, filters, and animation |
-| `type-scale.css` | Type scale utilities used by the page |
 | `.vscode/` | Editor settings and recommended extensions |
 
 Tweak the look in `styles.css` under `:root` (colors, stroke widths, glow, timing).
