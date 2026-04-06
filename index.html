@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Experiment</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="type-scale.css" />
+  </head>
+  <body>
+    <main class="lab">
+      <div class="spinner size-15xl">
+        <svg
+          class="spinner__svg"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="xMidYMid meet"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <defs>
+            <linearGradient id="spinner-inner-fill" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="var(--spinner-inner-grad-from)" />
+              <stop offset="68%" stop-color="var(--spinner-inner-grad-mid)" />
+              <stop offset="100%" stop-color="var(--spinner-inner-grad-to)" />
+            </linearGradient>
+            <linearGradient id="spinner-inner-rim" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
+              <stop offset="0%" stop-color="var(--spinner-inner-rim-a)" />
+              <stop offset="32%" stop-color="var(--spinner-inner-rim-b)" />
+              <stop offset="100%" stop-color="var(--spinner-inner-rim-c)" />
+            </linearGradient>
+            <filter
+              id="spinner-glow-far"
+              x="-32"
+              y="-32"
+              width="164"
+              height="164"
+              filterUnits="userSpaceOnUse"
+              color-interpolation-filters="sRGB"
+            >
+              <feGaussianBlur in="SourceGraphic" stdDeviation="2.4" />
+            </filter>
+            <filter
+              id="spinner-glow-near"
+              x="-22"
+              y="-22"
+              width="144"
+              height="144"
+              filterUnits="userSpaceOnUse"
+              color-interpolation-filters="sRGB"
+            >
+              <feGaussianBlur in="SourceGraphic" stdDeviation="0.85" />
+            </filter>
+            <mask
+              id="spinner-inner-light-mask"
+              maskUnits="userSpaceOnUse"
+              maskContentUnits="userSpaceOnUse"
+              x="0"
+              y="0"
+              width="100"
+              height="100"
+            >
+              <circle class="spinner__inner-light-mask-disk" />
+            </mask>
+          </defs>
+          <circle class="spinner__inner" />
+          <circle class="spinner__track" />
+          <g class="spinner__line-rotor">
+            <circle class="spinner__dash spinner__glow-far" />
+            <circle class="spinner__dash spinner__glow-near" />
+            <g class="spinner__line-inner-light" mask="url(#spinner-inner-light-mask)">
+              <circle class="spinner__dash spinner__glow-inner-far" />
+              <circle class="spinner__dash spinner__glow-inner-near" />
+            </g>
+            <circle class="spinner__dash spinner__line" />
+          </g>
+        </svg>
+      </div>
+    </main>
+  </body>
+</html>

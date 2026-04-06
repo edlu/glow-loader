@@ -1,0 +1,249 @@
+/* Dash “breathing” uses @property so values interpolate; animating stroke-dasharray in @keyframes often snaps. */
+@property --spinner-line-dash-frac {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0.005;
+}
+
+@property --spinner-line-offset-frac {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+/* --- Tokens: tweak here for quick global experiments --- */
+:root {
+  --bg: #0f1115;
+  --surface: #1a1d24;
+  --text: #e8eaed;
+  --muted: #9aa0a6;
+  --accent: #0099EC;
+  --radius: 12px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --max: 56rem;
+
+  /* Spinner: box size on `.spinner`; circle geometry is viewBox user units (scales with the SVG) */
+  --spinner-size: 8rem;
+  --spinner-cx: 50;
+  --spinner-cy: 50;
+  --spinner-r-track: 40;
+  --spinner-r-inner: 37;
+  --spinner-r-line: 40;
+  /* 2πr in viewBox units; keep in sync with --spinner-r-line */
+  --spinner-line-circumference: calc(2 * pi * var(--spinner-r-line));
+  --spinner-stroke-line: var(--accent);
+  --spinner-inner-grad-from: rgba(255, 255, 255, 0.05);
+  /* Neutral mid keeps shadow localized toward lower-right (light theme depth) */
+  --spinner-inner-grad-mid: rgba(0, 0, 0, 0);
+  /* Lower “kicker” as shadow — low contrast on dark bg, visible on light bg */
+  --spinner-inner-grad-to: rgba(0, 0, 0, 0.14);
+  --spinner-w-track: 2;
+  --spinner-w-line: 2;
+  --spinner-inner-opacity: 1;
+  --spinner-track-opacity: 0.24;
+  /* Line glow: wider strokes read as soft fill; blur diffuses in user space */
+  --spinner-line-glow-w-far: calc(var(--spinner-w-line) * 3.4);
+  --spinner-line-glow-w-near: calc(var(--spinner-w-line) * 1);
+  --spinner-line-inner-glow-w-far: calc(var(--spinner-w-line) * 6.8);
+  --spinner-line-inner-glow-w-near: calc(var(--spinner-w-line) * 3.35);
+  /* Opacity: bar glow (outside inner) */
+  --spinner-line-glow-far-opacity: 0.55;
+  --spinner-line-glow-near-opacity: 0.65;
+  /* Opacity: bar light spill on inner disk (masked); keep low */
+  --spinner-line-inner-glow-far-opacity: 0.14;
+  --spinner-line-inner-glow-near-opacity: 0.2;
+  /* Inner hairline rim (stroke uses #spinner-inner-rim) */
+  --spinner-inner-rim-width: 0.8;
+  --spinner-inner-rim-a: rgba(255, 255, 255, 0.1);
+  --spinner-inner-rim-b: rgba(255, 255, 255, 0.01);
+  --spinner-inner-rim-c: rgba(0, 0, 0, 0.1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+}
+
+code {
+  font-family: ui-monospace, "Cascadia Code", "SF Mono", Menlo, monospace;
+  font-size: 0.9em;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+}
+
+/* --- Layout shell --- */
+.lab {
+  max-width: var(--max);
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lab__header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+}
+
+.lab__title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.lab__hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.spinner {
+  width: 1em;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+}
+
+.spinner__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.spinner__inner,
+.spinner__inner-light-mask-disk {
+  cx: var(--spinner-cx);
+  cy: var(--spinner-cy);
+  r: var(--spinner-r-inner);
+}
+
+.spinner__inner {
+  fill: url(#spinner-inner-fill);
+  fill-opacity: var(--spinner-inner-opacity);
+  stroke: url(#spinner-inner-rim);
+  stroke-width: var(--spinner-inner-rim-width);
+}
+
+.spinner__inner-light-mask-disk {
+  fill: #fff;
+}
+
+.spinner__track {
+  cx: var(--spinner-cx);
+  cy: var(--spinner-cy);
+  r: var(--spinner-r-track);
+  fill: none;
+  stroke: color-mix(in srgb, white 10%, transparent);
+  stroke-width: var(--spinner-w-track);
+  stroke-opacity: var(--spinner-track-opacity);
+  stroke-linecap: round;
+}
+
+.spinner__line-rotor {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: spinner-line-rotate 2s linear infinite;
+}
+
+.spinner__dash {
+  cx: var(--spinner-cx);
+  cy: var(--spinner-cy);
+  r: var(--spinner-r-line);
+  fill: none;
+  stroke-linecap: round;
+  --spinner-line-dash-min: 0.005;
+  --spinner-line-dash-peak: 0.445;
+  --spinner-line-offset-mid-frac: -0.175;
+  --spinner-line-offset-end-frac: -0.62;
+  stroke-dasharray: calc(var(--spinner-line-dash-frac) * var(--spinner-line-circumference))
+    var(--spinner-line-circumference);
+  stroke-dashoffset: calc(var(--spinner-line-offset-frac) * var(--spinner-line-circumference));
+  animation: spinner-line-dash 2.25s ease-in-out infinite;
+}
+
+.spinner__glow-far {
+  stroke: color-mix(in srgb, var(--spinner-stroke-line) 24%, transparent);
+  stroke-width: var(--spinner-line-glow-w-far);
+  filter: url(#spinner-glow-far);
+  opacity: var(--spinner-line-glow-far-opacity);
+}
+
+.spinner__glow-near {
+  stroke: color-mix(in srgb, var(--spinner-stroke-line) 42%, transparent);
+  stroke-width: var(--spinner-line-glow-w-near);
+  filter: url(#spinner-glow-near);
+  opacity: var(--spinner-line-glow-near-opacity);
+}
+
+.spinner__glow-inner-far {
+  stroke: color-mix(in srgb, var(--spinner-stroke-line) 18%, transparent);
+  stroke-width: var(--spinner-line-inner-glow-w-far);
+  filter: url(#spinner-glow-far);
+  opacity: var(--spinner-line-inner-glow-far-opacity);
+}
+
+.spinner__glow-inner-near {
+  stroke: color-mix(in srgb, var(--spinner-stroke-line) 32%, transparent);
+  stroke-width: var(--spinner-line-inner-glow-w-near);
+  filter: url(#spinner-glow-near);
+  opacity: var(--spinner-line-inner-glow-near-opacity);
+}
+
+.spinner__line {
+  stroke: color-mix(in srgb, var(--spinner-stroke-line) 92%, white 8%);
+  stroke-width: var(--spinner-w-line);
+}
+
+@supports (opacity: random(0, 1)) {
+  .spinner__dash {
+    --spinner-line-dash-min: random(--spinner-dash-min, 0.003, 0.017);
+    --spinner-line-dash-peak: random(--spinner-dash-peak, 0.16, 0.58);
+    --spinner-line-offset-mid-frac: calc(var(--spinner-line-dash-peak) * (-0.175 / 0.445));
+    --spinner-line-offset-end-frac: calc(var(--spinner-line-dash-peak) * (-0.62 / 0.445));
+  }
+}
+
+@keyframes spinner-line-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner-line-dash {
+  0% {
+    --spinner-line-dash-frac: var(--spinner-line-dash-min);
+    --spinner-line-offset-frac: 0;
+  }
+  33.333% {
+    --spinner-line-dash-frac: var(--spinner-line-dash-peak);
+    --spinner-line-offset-frac: var(--spinner-line-offset-mid-frac);
+  }
+  66.666% {
+    --spinner-line-dash-frac: var(--spinner-line-dash-peak);
+    --spinner-line-offset-frac: var(--spinner-line-offset-end-frac);
+  }
+  100% {
+    --spinner-line-dash-frac: var(--spinner-line-dash-min);
+    /* One full revolution in offset space; same paint as 0 but no rewind toward 0 */
+    --spinner-line-offset-frac: -1;
+  }
+}

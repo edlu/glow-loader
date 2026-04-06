@@ -1,0 +1,153 @@
+/**
+ * Sizing ramp — Major Second (1.125×).
+ * Base step: size-5xl = 2rem (32px when root is 16px).
+ * Class names: size-3xs … size-30xl (11xl+ = 10xl × 1.125 per step).
+ */
+
+:root {
+  --font-size-3xs: 0.616rem;
+  --font-size-2xs: 0.693rem;
+  --font-size-xs: 0.779rem;
+  --font-size-sm: 0.877rem;
+  --font-size-md: 0.987rem;
+  --font-size-lg: 1.11rem;
+  --font-size-xl: 1.248rem;
+  --font-size-2xl: 1.405rem;
+  --font-size-3xl: 1.58rem;
+  --font-size-4xl: 1.778rem;
+  --font-size-5xl: 2rem;
+  --font-size-6xl: 2.25rem;
+  --font-size-7xl: 2.531rem;
+  --font-size-8xl: 2.848rem;
+  --font-size-9xl: 3.204rem;
+  --font-size-10xl: 3.604rem;
+  --font-size-11xl: 4.054rem;
+  --font-size-12xl: 4.561rem;
+  --font-size-13xl: 5.131rem;
+  --font-size-14xl: 5.773rem;
+  --font-size-15xl: 6.495rem;
+  --font-size-16xl: 7.306rem;
+  --font-size-17xl: 8.22rem;
+  --font-size-18xl: 9.247rem;
+  --font-size-19xl: 10.403rem;
+  --font-size-20xl: 11.703rem;
+  --font-size-21xl: 13.166rem;
+  --font-size-22xl: 14.812rem;
+  --font-size-23xl: 16.664rem;
+  --font-size-24xl: 18.746rem;
+  --font-size-25xl: 21.09rem;
+  --font-size-26xl: 23.726rem;
+  --font-size-27xl: 26.692rem;
+  --font-size-28xl: 30.028rem;
+  --font-size-29xl: 33.782rem;
+  --font-size-30xl: 38.005rem;
+}
+
+.size-3xs {
+  font-size: var(--font-size-3xs);
+}
+.size-2xs {
+  font-size: var(--font-size-2xs);
+}
+.size-xs {
+  font-size: var(--font-size-xs);
+}
+.size-sm {
+  font-size: var(--font-size-sm);
+}
+.size-md {
+  font-size: var(--font-size-md);
+}
+.size-lg {
+  font-size: var(--font-size-lg);
+}
+.size-xl {
+  font-size: var(--font-size-xl);
+}
+.size-2xl {
+  font-size: var(--font-size-2xl);
+}
+.size-3xl {
+  font-size: var(--font-size-3xl);
+}
+.size-4xl {
+  font-size: var(--font-size-4xl);
+}
+.size-5xl {
+  font-size: var(--font-size-5xl);
+}
+.size-6xl {
+  font-size: var(--font-size-6xl);
+}
+.size-7xl {
+  font-size: var(--font-size-7xl);
+}
+.size-8xl {
+  font-size: var(--font-size-8xl);
+}
+.size-9xl {
+  font-size: var(--font-size-9xl);
+}
+.size-10xl {
+  font-size: var(--font-size-10xl);
+}
+.size-11xl {
+  font-size: var(--font-size-11xl);
+}
+.size-12xl {
+  font-size: var(--font-size-12xl);
+}
+.size-13xl {
+  font-size: var(--font-size-13xl);
+}
+.size-14xl {
+  font-size: var(--font-size-14xl);
+}
+.size-15xl {
+  font-size: var(--font-size-15xl);
+}
+.size-16xl {
+  font-size: var(--font-size-16xl);
+}
+.size-17xl {
+  font-size: var(--font-size-17xl);
+}
+.size-18xl {
+  font-size: var(--font-size-18xl);
+}
+.size-19xl {
+  font-size: var(--font-size-19xl);
+}
+.size-20xl {
+  font-size: var(--font-size-20xl);
+}
+.size-21xl {
+  font-size: var(--font-size-21xl);
+}
+.size-22xl {
+  font-size: var(--font-size-22xl);
+}
+.size-23xl {
+  font-size: var(--font-size-23xl);
+}
+.size-24xl {
+  font-size: var(--font-size-24xl);
+}
+.size-25xl {
+  font-size: var(--font-size-25xl);
+}
+.size-26xl {
+  font-size: var(--font-size-26xl);
+}
+.size-27xl {
+  font-size: var(--font-size-27xl);
+}
+.size-28xl {
+  font-size: var(--font-size-28xl);
+}
+.size-29xl {
+  font-size: var(--font-size-29xl);
+}
+.size-30xl {
+  font-size: var(--font-size-30xl);
+}
